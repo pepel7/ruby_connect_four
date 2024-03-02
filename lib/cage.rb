@@ -24,6 +24,19 @@ class Cage
     HEREDOC
   end
 
+  def full?
+    grid.all? { |column| column.all? { |cell| cell != '○' } }
+  end
+
+  def put_piece(column, color)
+    first_empty_cell = grid[column].index('○')
+    grid[column][first_empty_cell] = "\e[0;#{color};49m●\e[0m"
+  end
+
+  def not_full_column?(column)
+    grid[column].any? { |cell| empty_cell?(cell) }
+  end
+
   private
 
   def display_row(row) # rubocop:disable Metrics/AbcSize
@@ -32,5 +45,17 @@ class Cage
 
   def column_numbers
     (1..7).to_a.join(' ').gray
+  end
+
+  def same_color?(first_color, second_color)
+    first_color == second_color unless first_color.nil? || second_color.nil?
+  end
+
+  def off?(coord_pair)
+    coord_pair.any? { |coord| !coord.between?(0, 6) }
+  end
+
+  def empty_cell?(cell)
+    cell == '○'
   end
 end
