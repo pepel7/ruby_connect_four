@@ -6,7 +6,7 @@ class Cage
   attr_reader :grid, :game
 
   NEIGHBORS = [
-    [0, +1], [+1, +1], [+1, 0], [+1, -1], [0, -1], [-1, -1], [-1, 0], [-1, +1]
+    [+1, 0], [+1, -1], [0, -1], [-1, -1], [-1, 0], [-1, +1], [0, +1], [+1, +1]
   ].freeze
 
   def initialize(game)
@@ -29,7 +29,7 @@ class Cage
   end
 
   def full?
-    grid.all? { |column| column.all? { |cell| cell != '○' } }
+    grid.all? { |column| column.all? { |cell| empty_cell?(cell) } }
   end
 
   def put_piece(column, color)

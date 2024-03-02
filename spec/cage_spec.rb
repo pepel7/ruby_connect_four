@@ -54,7 +54,6 @@ describe Cage do
       it 'puts piece' do
         column_to_put = 5
         color_to_put = 40
-        # old_piece = cage.grid[column_to_put][0]
         cage.put_piece(column_to_put, color_to_put)
         new_piece = cage.grid[column_to_put][0]
         expect(new_piece).to eql("\e[0;40;49m●\e[0m")
