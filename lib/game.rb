@@ -32,6 +32,21 @@ class Game
     end
   end
 
+  def user_input
+    loop do
+      input = gets.chomp
+      verified_input = verify_input(input.to_i - 1) if input.match?(/^\d$/)
+      # -1 for correct index
+      return verified_input if verified_input
+
+      puts 'Input error! Please enter a column number between 1 and 7 that is not completely filled in.'.red
+    end
+  end
+
+  def verify_input(column)
+    return column if column.between?(0, 6) && cage.not_full_column?(column)
+  end
+
   private
 
   def instruduction
