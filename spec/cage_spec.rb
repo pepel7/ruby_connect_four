@@ -101,6 +101,91 @@ describe Cage do
       end
     end
   end
+
+  describe '#game_over?' do
+    context 'when grid is empty' do
+      it 'is not game over' do
+        expect(cage).not_to be_game_over
+      end
+    end
+
+    context 'when grid is slightly filled' do
+      before do
+        cage.instance_variable_set(:@grid, [
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○']
+                                           ])
+      end
+
+      it 'is not game over' do
+        expect(cage).not_to be_game_over
+      end
+    end
+
+    context 'when grid has a horizontal 4-in-a-row' do
+      before do
+        cage.instance_variable_set(:@grid, [
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", "\e[0;34;49m●\e[0m", "\e[0;34;49m●\e[0m", '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○']
+                                            ])
+      end
+
+      it 'is game over' do
+        expect(cage).to be_game_over
+      end
+    end
+
+    context 'when grid has a vertical 4-in-a-row' do
+      before do
+        cage.instance_variable_set(:@grid, [
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", "\e[0;33;49m●\e[0m", '○', '○', '○', '○'],
+          ['○', '○', '○', '○', '○', '○'],
+          ["\e[0;34;49m●\e[0m", "\e[0;34;49m●\e[0m", "\e[0;34;49m●\e[0m", "\e[0;34;49m●\e[0m", '○', '○'],
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○']
+                                            ])
+      end
+
+      it 'is game over' do
+        expect(cage).to be_game_over
+      end
+    end
+
+    context 'when grid has a diagonal 4-in-a-row' do
+      before do
+        cage.instance_variable_set(:@grid, [
+          ["\e[0;34;49m●\e[0m", '○', '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;34;49m●\e[0m", '○', '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", "\e[0;34;49m●\e[0m", '○', '○', '○'],
+          ["\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", "\e[0;33;49m●\e[0m", "\e[0;34;49m●\e[0m", '○', '○'],
+          ['○', '○', '○', '○', '○', '○'],
+          ['○', '○', '○', '○', '○', '○'],
+          ['○', '○', '○', '○', '○', '○']
+                                            ])
+      end
+
+      it 'is game over' do
+        expect(cage).to be_game_over
+      end
+
+      it 'sends #update_winner' do
+        expect(game).to receive(:update_winner)
+        cage.game_over?
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
